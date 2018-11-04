@@ -1,10 +1,4 @@
 import mongoose from 'mongoose';
-import validator from 'validator';
-import uniqueValidator from 'mongoose-unique-validator';
-
-import {hashSync, compareSync } from 'bcrypt-nodejs'
-
-import jwt from 'jsonwebtoken';
 
 let ConversationSchema = new mongoose.Schema({
 	user_emails: {

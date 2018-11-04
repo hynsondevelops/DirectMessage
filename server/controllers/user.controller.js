@@ -21,6 +21,15 @@ exports.getUser = function(req, res) {
 	})
 }
 
+exports.showUser = function(req, res) {
+	let regexQuery = new RegExp(req.params.query, "i")
+	console.log(regexQuery)
+
+	User.find({ $or: [ { email: regexQuery }, { name: regexQuery } ] }, function(err, users) {
+		res.send(users)
+	})
+}
+
 exports.createUser = function(req, res) {
 	let user = new User(
 	        {

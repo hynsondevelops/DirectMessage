@@ -1,13 +1,9 @@
 import mongoose from 'mongoose';
-import validator from 'validator';
-import uniqueValidator from 'mongoose-unique-validator';
-
-
 
 let MessageSchema = new mongoose.Schema({
   author: {
   	type: String
-  }
+  },
   content: {
     type: [String],
     unique: true,

@@ -16,5 +16,6 @@ router.get('/new', user_controller.newUser);
 router.post('/register', validate(userValidation.loginUser), userController.registerUser);
 router.get('/register', user_controller.newRegisterUser);
 router.post('/login', authLocal, userController.loginUser);
+router.get('/show/:query', user_controller.showUser)
 
 module.exports = router;
