@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { updateUsername, updateUseremail, updatePasswordconfirmation, updateUserpassword } from '../operations/index'
+import { updateUsername, updateUseremail, updatePasswordconfirmation, updateUserpassword, userLogin } from '../operations/index'
 import Login from '../components/Login'
 
 const mapStateToProps = state => ({
@@ -21,13 +21,16 @@ const mapDispatchToProps = dispatch => {
 		dispatch(updateUseremail(email))
 	}
 
-
+	const loginUser = (user) => {
+		dispatch(userLogin(user))
+	}
 
 	return {
 		updateUserName,
 		updateUserPassword,
 		updatePasswordConfirmation,
-		updateUserEmail
+		updateUserEmail,
+		loginUser
 	}
 	/*
 	updateUserEmail: email => dispatch(updateUserEmail(email)),

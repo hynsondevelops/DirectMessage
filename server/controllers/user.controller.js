@@ -73,6 +73,7 @@ exports.newLoginUser = function(req, res) {
 
 
 export function loginUser(req, res, next) {
+	console.log(req)
 	console.log(req.user)
 	res.status(200).json(req.user.toJSON())
 	return next();

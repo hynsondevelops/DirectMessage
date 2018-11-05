@@ -12,6 +12,7 @@ const localStrategy = new LocalStrategy(localOpts, async (email, password, done)
   try {
     const user = await User.findOne({ email });
     console.log(user)
+    console.log("^")
     if (!user) {
       return done(null, false);
     } else if (!user.authenticateUser(password)) {

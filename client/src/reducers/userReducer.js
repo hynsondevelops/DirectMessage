@@ -6,6 +6,7 @@ const INITIAL_USER_STATE = {
 }
 
 const user = (state = [], action) => {
+  console.log(action)
   switch (action.type) {
     case 'updateUserEmail':
       return Object.assign({}, state, {email: action.email})
@@ -25,12 +26,9 @@ const user = (state = [], action) => {
         }
       ]
     case 'loginUser':
-      return [
-        ...state,
-        {
-          user: action.user
-        }
-      ]
+      return Object.assign({}, state, {
+            user
+        })
     default: 
       return INITIAL_USER_STATE
   }

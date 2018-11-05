@@ -7,6 +7,8 @@ class Login extends Component {
   }
 
   render() {
+    console.log(this.props.user)
+    let user = this.props.user
   if (this.props.loggedIn){
     return (
       <div>
@@ -70,7 +72,7 @@ class Login extends Component {
 </form>
       </div>
       <div>  
-      <Button bsStyle="primary" onClick={e => {}}>Register</Button> 
+      <Button bsStyle="primary" onClick={(e) => this.props.loginUser(user)}>Login</Button> 
       </div>
     </div>
       );

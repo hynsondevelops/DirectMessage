@@ -20,31 +20,40 @@ export function updateUseremail(event) {
 	return function(dispatch) {
 		dispatch(updateUserEmail(event.target.value))
 	}
-}
+}2
 
 export function userLoggedIn(user){
 
 }
 
-export function userLogin(event, user) {
+export function userLogin(user) {
+	console.log(user)
+	console.log("userLogin")
 	return function(dispatch) {
-		let email, name, password;
+		console.log("dispatch")
+		let givenEmail, givenName, givenPassword;
+		console.log("variables declared")
+		console.log(user)
 		if (user.password == user.passwordConfirm) { //password and password confirm match
-			email = user.email;
-			name = user.name;
-			password = user.password;
+			givenEmail = user.email;
+			givenName = user.name;
+			givenPassword = user.password;
 		}
 		else {
 			//dont make api call
 			return false;
 		}
+		console.log("API Inc")
 		//request action
 		return axiosClient
-		.post('/user/login', {email: email, name: name, password: password})
+		.post('/user/login', {email: givenEmail, name: givenName, password: givenPassword})
 		.then(response => {
-			console.log(response.body)
-			dispatch(loginUser(user))
+			console.log(response.data)
+			dispatch(loginUser(response.data))
 		})
+		.catch(error => {
+		     console.log("An error occured", error)
+		   }); 
 	}
 
 }

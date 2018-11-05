@@ -13,6 +13,10 @@ const bcrypt = require('bcrypt-nodejs');
 const mongoose = require('mongoose')
 const db = 'mongodb://localhost/ChatAppDB';
 
+
+//cors
+const cors = require('cors')
+
 const user = require('./routes/user.route'); // Imports routes for the products
 //const message = require('./routes/message.route')
 import { authJwt } from './services/auth.services'
@@ -23,6 +27,8 @@ mongoose.connect(db)
 
 // create the server
 const app = express();
+
+app.use(cors())
 
 // add & configure middleware
 app.use(bodyParser.urlencoded({ extended: true }))
