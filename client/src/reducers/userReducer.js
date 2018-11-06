@@ -26,9 +26,7 @@ const user = (state = [], action) => {
         }
       ]
     case 'loginUser':
-      return Object.assign({}, state, {
-            user
-        })
+      return Object.assign({}, state, {token: action.user.token})
     default: 
       return INITIAL_USER_STATE
   }

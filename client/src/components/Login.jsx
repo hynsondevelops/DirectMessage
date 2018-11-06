@@ -9,28 +9,10 @@ class Login extends Component {
   render() {
     console.log(this.props.user)
     let user = this.props.user
-  if (this.props.loggedIn){
+    console.log(this.props.user.token)
+  if (this.props.user.token != undefined){
     return (
-      <div>
-      <div>Log In Sign Up</div>
-      <div>
-      <form>
-  <label>
-    Username:
-    <input type="text" name="Username" onChange={e => {console.log(e); this.props.updateUserName(e.target.value)}} value={this.props.user.name} />
-  </label>
-</form>
-      </div>
-      <div>
-      <form>
-  <label>
-    Password:
-    <input type="text" name="Password" onChange={this.props.updateUserPassword} value={this.props.user.password} />
-  </label>
-</form>
-      </div>
-      <div> LogInButton </div>
-    </div>
+      <h3> Welcome, {this.props.user.name} </h3>
       );
     }
   else {
