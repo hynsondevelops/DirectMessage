@@ -20,12 +20,33 @@ export const updatePasswordConfirmation = passwordConfirm => ({
   passwordConfirm
 })
 
-export const registerUser = user => ({
-  type: 'registerUser',
+export const userRegisterRequest = () => ({
+  type: 'userRegisterRequest'
+})
+
+export const userRegisterSuccess = user => ({
+  type: 'userRegisterSuccess',
   user
 })
 
-export const loginUser = user =>({
-  type: 'loginUser',
+export const userRegisterFailure = (errors) => ({
+  type: 'userRegisterFailure',
+  errors
+})
+
+
+export const userLoginRequest = () => ({
+  type: 'userLoginRequest'
+})
+
+export const userLoginSuccess = user =>({
+  type: 'userLoginSuccess',
   user
 })
+
+export const userLoginFailure = (errors) => ({
+  type: 'userLoginFailure',
+  errors
+})
+
+

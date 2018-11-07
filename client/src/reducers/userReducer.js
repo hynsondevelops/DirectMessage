@@ -2,7 +2,8 @@ const INITIAL_USER_STATE = {
   name: "",
   email: "",
   password: "",
-  passwordConfirm: ""
+  passwordConfirm: "",
+  token: undefined
 }
 
 const user = (state = [], action) => {
@@ -13,20 +14,21 @@ const user = (state = [], action) => {
     case 'updateUserPassword':
       return Object.assign({}, state, {password: action.password})
     case 'updateUserName':
-      console.log("HI HELLO")
       return Object.assign({}, state, {name: action.username})
-
     case 'updatePasswordConfirmation':
       return Object.assign({}, state, {passwordConfirm: action.passwordConfirm})
-    case 'registerUser':
-      return [
-        ...state,
-        {
-          user: action.user
-        }
-      ]
-    case 'loginUser':
+    case 'userLoginRequest':
+      return Object.assign({}, state)
+    case 'userLoginSuccess':
       return Object.assign({}, state, {token: action.user.token})
+    case 'userLoginFailure':
+      return Object.assign({}, state, {errors: action.errors})
+    case 'userRegisterRequest':
+      return Object.assign({}, state)
+    case 'userRegisterSuccess':
+      return Object.assign({}, state, {token: action.user.token})
+    case 'userRegisterFailure':
+      return Object.assign({}, state, {errors: action.errors})
     default: 
       return INITIAL_USER_STATE
   }
