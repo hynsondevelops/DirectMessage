@@ -8,12 +8,7 @@ class Register extends Component {
 
   render() {
     let user = this.props.user
-  if (this.props.user.token != undefined){
-    return (
-      <h3> Welcome, {this.props.user.name} </h3>
-      );
-    }
-  else {
+  
     return (
       <div>
       <div>Sign Up</div>
@@ -57,7 +52,6 @@ class Register extends Component {
     </div>
       );
     }
-  }
 }
 
 export default Register;    

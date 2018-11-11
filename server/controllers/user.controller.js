@@ -83,6 +83,7 @@ export function loginUser(req, res, next) {
 		console.log(user)
 	      if (err) { return next(err) }
 	      if (!user) { return res.status(500).json(info.message) }
+	      res.send(user.toJSON())
 	    })(req, res, next);  
 }
 

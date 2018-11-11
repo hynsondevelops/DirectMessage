@@ -23,27 +23,14 @@ export function updateUseremail(event) {
 }
 
 export function userLogin(user) {
-	console.log(user)
-	console.log("userLogin")
 	return function(dispatch) {
 		dispatch(userLoginRequest())
-		console.log("dispatch")
-		let givenEmail, givenName, givenPassword;
-		console.log("variables declared")
-		console.log(user)
-		if (user.password == user.passwordConfirm) { //password and password confirm match
-			givenEmail = user.email;
-			givenName = user.name;
-			givenPassword = user.password;
-		}
-		else {
-			//dont make api call
-			return false;
-		}
+		let givenEmail = user.email;
+		let givenPassword = user.password;
 		console.log("API Inc")
 		//request action
 		return axiosClient
-		.post('/user/login', {email: givenEmail, name: givenName, password: givenPassword})
+		.post('/user/login', {email: givenEmail, password: givenPassword})
 		.then(response => {
 			console.log(response.data)
 			dispatch(userLoginSuccess(response.data))
@@ -89,7 +76,7 @@ export function userRegister(user) {
 
 }
 
-export function addFriend(loggedInUser, newFriend) {
+export function addFriendOp(loggedInUser, newFriend) {
 	return axiosClient
 	.post('/user/add_friend', {loggedInUser, newFriend})
 	.then(response => {
