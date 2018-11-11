@@ -80,6 +80,31 @@ app.get('/private', authJwt, (req, res) => {
   res.send("Private info!")
 })
 
+app.use(function(err, req, res, next){
+  console.log(req.body)
+  console.log("error handle")
+  if (err.errors) {
+    if (err.errors[0]) {
+      console.log("HERE?")
+      console.log(err.errors[0])
+      if (err.errors[0].messages[0] == '"email" must be a valid email') {
+        res.status(400).json(req.body.email + err.errors[0].messages[0].slice(7))
+      }
+      else {
+        res.status(400).json(err.errors[0].messages);
+      }
+    }
+    else {
+      if (err.errors.email) {
+        console.log("here")
+        res.status(400).json(err.errors.email.message)
+      }
+    }
+  }
+  else {
+    res.status(400).json(err)
+  }
+});
 
 
 // tell the server what port to listen on

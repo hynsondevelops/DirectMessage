@@ -59,7 +59,7 @@ export function userRegister(user) {
 		}
 		else {
 			//dont make api call
-			return false;
+			return dispatch(userRegisterFailure({response: {data: ["Password and confirmation did not match."]}}));
 		}
 		console.log("API Inc")
 		//request action

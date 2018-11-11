@@ -58,15 +58,20 @@ exports.newRegisterUser = function(req, res) {
 }
 
 
-export async function registerUser(req, res) {
-
+export async function registerUser(req, res, next) {
+	console.log("register")
 	try {
+		console.log(req.body)
 		const user = await User.create(req.body)
 		console.log(user)
+		if (!user) {
+			return res.status(400).json(req.user.email + " is taken")
+		}
 		return res.status(201).json(user)
 	}
 	catch (e) {
-		return res.status(500).json(e)
+		console.log("e caught")
+		return next(e)
 	}
 }
 

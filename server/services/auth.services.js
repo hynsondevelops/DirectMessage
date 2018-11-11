@@ -51,6 +51,7 @@ passport.use(jwtStrategy);
 export const myPassport = passport;
 
 export const authLocal = passport.authenticate('local', { session: false }, function(err, user, info) {
+  console.log("this is info")
   console.log(info)
 })
 export const authJwt = passport.authenticate('jwt', { session: false });
