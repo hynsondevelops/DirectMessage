@@ -49,8 +49,9 @@ export function userLogin(user) {
 			dispatch(userLoginSuccess(response.data))
 		})
 		.catch(error => {
+			console.log(error)
 		     dispatch(userLoginFailure(error))
-		   }); 
+		}); 
 	}
 
 }
@@ -83,7 +84,15 @@ export function userRegister(user) {
 		})
 		.catch(error => {
 			dispatch(userRegisterFailure(error))
-		}); 
+		});
 	}
 
+}
+
+export function addFriend(loggedInUser, newFriend) {
+	return axiosClient
+	.post('/user/add_friend', {loggedInUser, newFriend})
+	.then(response => {
+		console.log(response.data)
+	})
 }

@@ -15,7 +15,7 @@ router.post('/new', user_controller.createUser);
 router.get('/new', user_controller.newUser);
 router.post('/register', validate(userValidation.loginUser), userController.registerUser);
 router.get('/register', user_controller.newRegisterUser);
-router.post('/login', authLocal, userController.loginUser);
+router.post('/login', userController.loginUser);
 router.get('/show/:query', user_controller.showUser)
-
+router.post('/add_friend', userController.addFriend)
 module.exports = router;

@@ -28,6 +28,9 @@ let UserSchema = new mongoose.Schema({
     },
     conversations: {
       type: [String]
+    },
+    friends: {
+      type: [String]
     }
 });
 
@@ -63,6 +66,8 @@ UserSchema.methods = {
   		name: this.name,
   		token: `JWT ${this.createToken()}`,
   		email: this.email,
+      friends: this.friends,
+      conversations: this.conversations
   	}
   }
 };

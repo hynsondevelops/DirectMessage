@@ -1,6 +1,9 @@
 const User = require('../models/user.model');
 var express = require('express');
 
+import {myPassport} from '../services/auth.services'
+
+let ObjectId = require('mongodb').ObjectId
 
 //Simple version, without validation or sanitation
 exports.getUser = function(req, res) {
@@ -73,10 +76,41 @@ exports.newLoginUser = function(req, res) {
 
 
 export function loginUser(req, res, next) {
-	console.log(req)
-	console.log(req.user)
-	res.status(200).json(req.user.toJSON())
-	return next();
+	myPassport.authenticate('local', function(err, user, info) {
+		console.log("login")
+		console.log(info)
+		console.log("user below")
+		console.log(user)
+	      if (err) { return next(err) }
+	      if (!user) { return res.status(500).json(info.message) }
+	    })(req, res, next);  
+}
+
+export function addFriend(req, res) {
+	console.log(req.body)
+	console.log(req.body.loggedInUser._id)
+	let loggedInUserId = ObjectId(req.body.loggedInUser._id)
+	let newFriendId = ObjectId(req.body.newFriend._id)
+	User.findOneAndUpdate({_id: loggedInUserId}, { $addToSet: { friends: newFriendId}}, {new: true}, function (err, user) {
+		  if (err) return handleError(err);
+		  res.send(user);
+	})
+	// 
+	/*
+	User.updateOne(ObjectId(user_id), function(err, user) {
+		user.friends.push(ObjectId("5bd761afac53c523a5b2a95c"))
+		console.log(user)
+		user.save()
+		console.log("saved")
+		res.send(newUser)
+	})
+
+	let updatedUser = User.updateOne(
+		{_id: ObjectId(user_id)},
+		{ $addToSet: { friends: ObjectId("5bd761afac53c523a5b2a95c")} }
+	)
+	res.send(updatedUser)
+	*/
 }
 /*
 

@@ -6,17 +6,17 @@ import User from '../models/user.model';
 
 const localOpts = {
   usernameField: 'email',
+  passReqToCallback : true
 };
 
-const localStrategy = new LocalStrategy(localOpts, async (email, password, done) => {
+const localStrategy = new LocalStrategy(localOpts, async (req, email, password, done) => {
+  console.log("local strategy")
   try {
     const user = await User.findOne({ email });
-    console.log(user)
-    console.log("^")
     if (!user) {
-      return done(null, false);
+      return done(null, false, { message: 'User does not exist!' });
     } else if (!user.authenticateUser(password)) {
-      return done(null, false);
+      return done(null, false, { message: 'Wrong password.' });
     }
 
     return done(null, user);
@@ -48,5 +48,9 @@ const jwtStrategy = new JWTStrategy(jwtOpts, async (payload, done) => {
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
-export const authLocal = passport.authenticate('local', { session: false });
+export const myPassport = passport;
+
+export const authLocal = passport.authenticate('local', { session: false }, function(err, user, info) {
+  console.log(info)
+})
 export const authJwt = passport.authenticate('jwt', { session: false });
