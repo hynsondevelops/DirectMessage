@@ -5,7 +5,7 @@ import LoginContainer from './container/LoginContainer';
 import RegisterContainer from './container/RegisterContainer';
 import AlertContainer from './container/AlertContainer';
 import AddFriendContainer from './container/AddFriendContainer';
-
+import FriendsListContainer from './container/FriendsListContainer'
 
 class App extends Component {
 
@@ -17,6 +17,7 @@ class App extends Component {
     	 <AlertContainer />
 	     <LoginContainer />
 	     <RegisterContainer />
+       <FriendsListContainer />
      	</div>
      )
   }
