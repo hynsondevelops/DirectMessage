@@ -3,7 +3,9 @@ const INITIAL_USER_STATE = {
   email: "",
   password: "",
   passwordConfirm: "",
-  token: undefined
+  token: undefined,
+  friends: [],
+  conversations: []
 }
 
 const user = (state = [], action) => {
@@ -20,7 +22,7 @@ const user = (state = [], action) => {
     case 'userLoginRequest':
       return Object.assign({}, state)
     case 'userLoginSuccess':
-      return Object.assign({}, state, {token: action.user.token})
+      return action.user
     case 'userLoginFailure':
       return Object.assign({}, state, {errors: action.errors})
     case 'userRegisterRequest':
@@ -29,6 +31,8 @@ const user = (state = [], action) => {
       return Object.assign({}, state, {token: action.user.token})
     case 'userRegisterFailure':
       return Object.assign({}, state, {errors: action.errors})
+    case 'getFriendsInfo':
+      return Object.assign({}, state, {friends: action.friends})
     default: 
       return INITIAL_USER_STATE
   }

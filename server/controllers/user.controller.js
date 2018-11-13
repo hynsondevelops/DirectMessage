@@ -88,6 +88,7 @@ export function loginUser(req, res, next) {
 		console.log(user)
 	      if (err) { return next(err) }
 	      if (!user) { return res.status(500).json(info.message) }
+	      console.log(user.toJSON())
 	      res.send(user.toJSON())
 	    })(req, res, next);  
 }
@@ -117,6 +118,16 @@ export function addFriend(req, res) {
 	)
 	res.send(updatedUser)
 	*/
+}
+
+export function getFriends(req, res) {
+	console.log("getFriends")
+	console.log(req.params)
+	let loggedInUserId = req.params.user_id
+	User.find({friends: {$in: [loggedInUserId]} }, function(err, users) {
+		if (err) return handleError(err)
+		res.send(users)
+	})
 }
 /*
 

@@ -18,4 +18,5 @@ router.get('/register', user_controller.newRegisterUser);
 router.post('/login', userController.loginUser);
 router.get('/show/:query', user_controller.showUser)
 router.post('/add_friend', userController.addFriend)
+router.get('/get_friends/:user_id', userController.getFriends)
 module.exports = router;

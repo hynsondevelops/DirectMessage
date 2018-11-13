@@ -49,4 +49,9 @@ export const userLoginFailure = (errors) => ({
   errors
 })
 
+export const getFriendsInfo = (friends) => ({
+  type: 'getFriendsInfo',
+  friends
+})
+
 

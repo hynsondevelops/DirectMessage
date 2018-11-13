@@ -1,4 +1,4 @@
-import {updateUserName, updatePasswordConfirmation, updateUserPassword, updateUserEmail, userLoginRequest, userLoginSuccess, userLoginFailure, userRegisterRequest, userRegisterSuccess, userRegisterFailure } from '../actions/index';
+import {updateUserName, updatePasswordConfirmation, updateUserPassword, updateUserEmail, userLoginRequest, userLoginSuccess, userLoginFailure, userRegisterRequest, userRegisterSuccess, userRegisterFailure, getFriendsInfo } from '../actions/index';
 import axiosClient from '../axiosClient'
 
 export function updateUsername(event) {
@@ -34,6 +34,11 @@ export function userLogin(user) {
 		.then(response => {
 			console.log(response.data)
 			dispatch(userLoginSuccess(response.data))
+			return axiosClient.get('/user/get_friends/' + "5bd761afac53c523a5b2a95c")
+		})
+		.then(response => {
+			console.log(response)
+			dispatch(getFriendsInfo(response.data))
 		})
 		.catch(error => {
 			console.log(error)
@@ -47,7 +52,7 @@ export function userRegister(user) {
 	console.log(user)
 	console.log("userRegister")
 	return function(dispatch) {
-		dispatch(userRegisterRequest)
+		dispatch(userRegisterRequest())
 		console.log("dispatch")
 		let givenEmail, givenName, givenPassword;
 		console.log("variables declared")
@@ -73,7 +78,6 @@ export function userRegister(user) {
 			dispatch(userRegisterFailure(error))
 		});
 	}
-
 }
 
 export function addFriendOp(loggedInUser, newFriend) {
@@ -82,4 +86,14 @@ export function addFriendOp(loggedInUser, newFriend) {
 	.then(response => {
 		console.log(response.data)
 	})
+}
+
+export function getFriends(loggedInUser) {
+	return function(dispatch) {
+		return axiosClient
+		.get('/user/get_friends/:user_id', {user_id: loggedInUser._id})
+		.then(response => {
+			console.log(response)
+		})
+	}	
 }
