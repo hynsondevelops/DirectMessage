@@ -94,8 +94,8 @@ export function loginUser(req, res, next) {
 }
 
 export function addFriend(req, res) {
+	console.log("Controller add friend")
 	console.log(req.body)
-	console.log(req.body.loggedInUser._id)
 	let loggedInUserId = ObjectId(req.body.loggedInUser._id)
 	let newFriendId = ObjectId(req.body.newFriend._id)
 	User.findOneAndUpdate({_id: loggedInUserId}, { $addToSet: { friends: newFriendId}}, {new: true}, function (err, user) {

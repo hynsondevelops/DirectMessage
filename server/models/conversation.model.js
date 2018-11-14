@@ -4,7 +4,6 @@ let ConversationSchema = new mongoose.Schema({
 	user_emails: {
 		type: [String],
 		unique: true,
-		}
 	},
   message_log: {
     type: [String],
