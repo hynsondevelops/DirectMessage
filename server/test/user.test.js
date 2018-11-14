@@ -10,6 +10,14 @@ let should = chai.should();
 let ObjectId = require('mongodb').ObjectId
 
 
+let loggedInUserInfo = {
+    name: "Adam",
+    password: "password",
+    email: "testemai1l@gmail.com",
+}
+
+
+
 
 chai.use(chaiHttp);
 
@@ -24,12 +32,8 @@ describe('Users', () => {
   */
   describe('/POST login', () => {
       it('it should allow a registered user to login', (done) => {
-          let loggedInUserInfo = {
-                    name: "Adam",
-                    password: "password",
-                    email: "testemai1l@gmail.com",
-                }
-          let loggedInUser = new User(loggedInUserInfo)
+        let loggedInUser = new User(loggedInUserInfo)
+
           loggedInUser.save((err, loggedInUser) => {
             chai.request(server)
                 .post('/user/login')
@@ -42,6 +46,18 @@ describe('Users', () => {
                 });
           })
       });
+
+      it('it should not allow a unregistered user to login', (done) => {
+        chai.request(server)
+            .post('/user/login')
+            .send(loggedInUserInfo)
+            .end((err, res) => {
+                console.log(res.body)
+                res.should.have.status(500);
+                res.body.should.eql("User does not exist!")
+                done();
+            });
+      })
 
   });
 
