@@ -10,7 +10,6 @@ const localOpts = {
 };
 
 const localStrategy = new LocalStrategy(localOpts, async (req, email, password, done) => {
-  console.log("local strategy")
   try {
     const user = await User.findOne({ email });
     if (!user) {
@@ -51,7 +50,5 @@ passport.use(jwtStrategy);
 export const myPassport = passport;
 
 export const authLocal = passport.authenticate('local', { session: false }, function(err, user, info) {
-  console.log("this is info")
-  console.log(info)
 })
 export const authJwt = passport.authenticate('jwt', { session: false });

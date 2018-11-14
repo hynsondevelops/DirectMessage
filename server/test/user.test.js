@@ -19,39 +19,28 @@ describe('Users', () => {
            done();           
         });        
     });
-  describe('/GET user/:id', () => {
-      it('it should GET a user by id', (done) => {
-        chai.request(server)
-            .get('/login')
-            .end((err, res) => {
-                  res.should.have.status(200);
-                  res.body.should.be.a('array');
-                  res.body.length.should.be.eql(0);
-              done();
-            });
-      });
-  });
   /*
   * Test the /POST route
   */
   describe('/POST login', () => {
       it('it should allow a registered user to login', (done) => {
-          let user = {
-              name: "Adam",
-              password: "password"
-          }
-        chai.request(server)
-            .post('/user/login')
-            .send(user)
-            .end((err, res) => {
-                  res.should.have.status(200);
-                  res.body.should.be.a('object');
-                  res.body.should.have.property('message').eql('User successfully logged in!');
-                  res.body.user.should.have.property('name');
-                  console.log(res.body.user)
-
-              done();
-            });
+          let loggedInUserInfo = {
+                    name: "Adam",
+                    password: "password",
+                    email: "testemai1l@gmail.com",
+                }
+          let loggedInUser = new User(loggedInUserInfo)
+          loggedInUser.save((err, loggedInUser) => {
+            chai.request(server)
+                .post('/user/login')
+                .send(loggedInUserInfo)
+                .end((err, res) => {
+                      res.should.have.status(200);
+                      res.body.should.be.a('object');
+                      res.body.should.have.property('email').eql(loggedInUser.email);
+                  done();
+                });
+          })
       });
 
   });
@@ -61,26 +50,28 @@ describe('Users', () => {
   * Test the /POST route
   */
   describe('/POST register', () => {
-      it('it should not login with incorrect credentials', (done) => {
-          let user = {
-              name: "Adam",
-              password: "password"
-          }
+      it('it should allow a user to register', (done) => {
+          let loggedInUser = {
+                    name: "Adam",
+                    password: "password",
+                    email: "testemai1l@gmail.com",
+                }
+
         chai.request(server)
             .post('/user/register')
-            .send(user)
+            .send(loggedInUser)
             .end((err, res) => {
-                  res.should.have.status(200);
+                  res.should.have.status(201);
                   res.body.should.be.a('object');
-                  res.body.should.have.property('message').eql('User successfully registered!');
-                  res.body.user.should.have.property('name');
-                  console.log(res.body.user)
+                  res.body.email.should.eql(loggedInUser.email);
 
               done();
             });
       });
 
   });
+
+
 
   describe('/POST add_friend/', () => {
       it('it should not login with incorrect credentials', (done) => {
@@ -95,22 +86,13 @@ describe('Users', () => {
               password: "password",
               email: "testemail1@gmail.com",
             })
-            console.log(newFriend)
             newFriend.save((err, newFriend) => {
-              console.log("Hi new friend")
-              console.log(newFriend)
               chai.request(server)
                   .post('/user/add_friend')
                   .send({loggedInUser: loggedInUser, newFriend: newFriend})
                   .end((err, res) => {
-                      console.log(res.body)
                       res.should.have.status(200);
                       res.body.should.be.a('object');
-                      console.log(newFriend._id)
-                      console.log(res.body.friends[0])
-                      console.log(newFriend._id)
-                      console.log(newFriend._id.equals(res.body.friends[0]))
-                      console.log()
                       res.body.friends.should.contain(ObjectId(newFriend._id).toString())
                       done();
                   });
@@ -134,15 +116,11 @@ describe('Users', () => {
           email: "testemail1@gmail.com",
           friends: [loggedInUser._id]
         })
-        console.log(newFriend)
         newFriend.save((err, newFriend) => {
-          console.log("Hi new friend")
-          console.log(newFriend)
           chai.request(server)
               .get('/user/get_friends/' + loggedInUser._id)
-              .send({user_id: 1})
+              .send()
               .end((err, res) => {
-                  console.log(res.body)
                   res.should.have.status(200);
                   res.body.should.be.a('array');
                   res.body[0].should.have.property('name', newFriend.name);
@@ -152,5 +130,63 @@ describe('Users', () => {
       })
     });
   })
+
+  describe('GET /show/:query', () => {
+      it('it should allow searching by email inclusively', (done) => {
+        let loggedInUser = new User({
+            name: "Adam",
+            password: "password",
+            email: "testemail@gmail.com",
+        })
+        loggedInUser.save((err, loggedInUser) => {
+          let newFriend = new User({
+            name: "Jim",
+            password: "password",
+            email: "testemail1@gmail.com",
+            friends: [loggedInUser._id]
+          })
+          newFriend.save((err, newFriend) => {
+            chai.request(server)
+                .get('/user/show/' + "test")
+                .send()
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    res.body[0].should.have.property('name', loggedInUser.name);
+                    res.body[1].should.have.property('name', newFriend.name);
+                    done();
+                });
+            })
+        })
+      });
+
+      it('it should allow searching by name inclusively', (done) => {
+        let loggedInUser = new User({
+            name: "Adam",
+            password: "password",
+            email: "testemail@gmail.com",
+        })
+        loggedInUser.save((err, loggedInUser) => {
+          let newFriend = new User({
+            name: "Jim",
+            password: "password",
+            email: "testemail1@gmail.com",
+            friends: [loggedInUser._id]
+          })
+          newFriend.save((err, newFriend) => {
+            chai.request(server)
+                .get('/user/show/' + "m")
+                .send()
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    res.body[0].should.have.property('name', loggedInUser.name);
+                    res.body[1].should.have.property('name', newFriend.name);
+                    done();
+                });
+            })
+        })
+      });
+    })
 
 });
