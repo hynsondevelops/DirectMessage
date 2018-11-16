@@ -56,7 +56,6 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', (req, res, next) => {
-  console.log("app.post('/login')")
   passport.authenticate('local', (err, user, info) => {
     if(info) {return res.send(info.message)}
     if (err) { return next(err); }
@@ -81,12 +80,8 @@ app.get('/private', authJwt, (req, res) => {
 })
 
 app.use(function(err, req, res, next){
-  console.log(req.body)
-  console.log("error handle")
   if (err.errors) {
     if (err.errors[0]) {
-      console.log("HERE?")
-      console.log(err.errors[0])
       if (err.errors[0].messages[0] == '"email" must be a valid email') {
         res.status(400).json(req.body.email + err.errors[0].messages[0].slice(7))
       }
@@ -96,7 +91,6 @@ app.use(function(err, req, res, next){
     }
     else {
       if (err.errors.email) {
-        console.log("here")
         res.status(400).json(err.errors.email.message)
       }
     }
@@ -109,7 +103,7 @@ app.use(function(err, req, res, next){
 
 // tell the server what port to listen on
 app.listen(3000, () => {
-  console.log('Listening on localhost:3000')
+  console.log('Listening on localhost:3000...')
 })
 
 module.exports = app, passport

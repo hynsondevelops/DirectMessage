@@ -52,7 +52,6 @@ describe('Users', () => {
             .post('/user/login')
             .send(loggedInUserInfo)
             .end((err, res) => {
-                console.log(res.body)
                 res.should.have.status(500);
                 res.body.should.eql("User does not exist!")
                 done();
@@ -67,22 +66,50 @@ describe('Users', () => {
   */
   describe('/POST register', () => {
       it('it should allow a user to register', (done) => {
+        chai.request(server)
+            .post('/user/register')
+            .send(loggedInUserInfo)
+            .end((err, res) => {
+                  res.should.have.status(201);
+                  res.body.should.be.a('object');
+                  res.body.email.should.eql(loggedInUserInfo.email);
+
+              done();
+            });
+      });
+
+      it ('should not allow a user to register if the email is invalid', (done) => {
           let loggedInUser = {
                     name: "Adam",
                     password: "password",
-                    email: "testemai1l@gmail.com",
+                    email: "testemail",
                 }
 
         chai.request(server)
             .post('/user/register')
             .send(loggedInUser)
             .end((err, res) => {
-                  res.should.have.status(201);
-                  res.body.should.be.a('object');
-                  res.body.email.should.eql(loggedInUser.email);
-
+                  res.should.have.status(400);
+                  res.body.should.be.a('string');
+                  res.body.should.eql(loggedInUser.email + " must be a valid email");
               done();
             });
+      });
+
+      it ('should not allow a user to register if the email is taken', (done) => {
+        let loggedInUser = new User(loggedInUserInfo)
+        loggedInUser.save((err, loggedInUser) => {
+          chai.request(server)
+              .post('/user/register')
+              .send(loggedInUserInfo)
+              .end((err, res) => {
+                    res.should.have.status(400);
+                    res.body.should.be.a('string');
+                    res.body.should.eql(loggedInUserInfo.email + " already taken!");
+
+                done();
+              });
+        })
       });
 
   });
@@ -118,8 +145,8 @@ describe('Users', () => {
   });
 
 
-  describe('GET /get add_friend/', () => {
-    it('it should not login with incorrect credentials', (done) => {
+  describe('GET get_friends/:user_id', () => {
+    it('it should return the list of user objects that a friend has added', (done) => {
       let loggedInUser = new User({
           name: "Adam",
           password: "password",
@@ -135,7 +162,7 @@ describe('Users', () => {
         newFriend.save((err, newFriend) => {
           chai.request(server)
               .get('/user/get_friends/' + loggedInUser._id)
-              .send()
+              .send() 
               .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
