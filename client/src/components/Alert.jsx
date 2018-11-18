@@ -8,7 +8,7 @@ class Alert extends Component {
 	render() {
 		let alerts = this.props.alerts
 		if (alerts) {
-			return <h3> {alerts} </h3>
+			return <h3 className="alert"> {alerts} </h3>
 		}
 		else {
 			return (null)
