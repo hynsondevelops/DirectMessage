@@ -6,7 +6,6 @@ class Alert extends Component {
 	}
 
 	render() {
-		console.log(this.props.alerts)
 		let alerts = this.props.alerts
 		if (alerts) {
 			return <h3> {alerts} </h3>
