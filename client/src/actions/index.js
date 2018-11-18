@@ -8,12 +8,10 @@ export const updateUserPassword = password => ({
   password
 })
 
-export function updateUserName(username) {
-  return {
-    type: 'updateUserName',
-    username
-  }
-}
+export const updateUserName = (username) => ({
+  type: 'updateUserName',
+  username
+})
 
 export const updatePasswordConfirmation = passwordConfirm => ({
   type: 'updatePasswordConfirmation',
