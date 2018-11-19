@@ -2,6 +2,8 @@ process.env.NODE_ENV = 'test';
 
 let mongoose = require("mongoose");
 let User = require('../models/user.model');
+let Conversation = require('../models/conversation.model');
+
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -24,8 +26,10 @@ chai.use(chaiHttp);
 describe('Users', () => {
     beforeEach((done) => {
         User.remove({}, (err) => { 
-           done();           
-        });        
+           Conversation.remove({}, (err) => {
+             done();
+           })            
+        });    
     });
   /*
   * Test the /POST route
@@ -53,11 +57,10 @@ describe('Users', () => {
             .send(loggedInUserInfo)
             .end((err, res) => {
                 res.should.have.status(500);
-                res.body.should.eql("User does not exist!")
+                res.body.should.eql("User does not exist!");
                 done();
             });
       })
-
   });
 
 
@@ -167,6 +170,33 @@ describe('Users', () => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
                   res.body[0].should.have.property('name', newFriend.name);
+                  done();
+              });
+          })
+      })
+    });
+  })
+
+  describe('GET get_conversations/:user_id', () => {
+    it('it should return the list of conversation objects that a user is included in', (done) => {
+      let loggedInUser = new User({
+          name: "Adam",
+          password: "password",
+          email: "testemai1l@gmail.com",
+      })
+      loggedInUser.save((err, loggedInUser) => {
+        let conversation = new Conversation({
+          message_log: ["hi hello"],
+          user_ids: [loggedInUser._id]
+        })
+        conversation.save((err, conversation) => {
+          chai.request(server)
+              .get('/user/get_conversations/' + loggedInUser._id)
+              .send() 
+              .end((err, res) => {
+                  res.should.have.status(200);
+                  res.body.should.be.a('array');
+                  res.body[0].message_log.should.eql(conversation.message_log);
                   done();
               });
           })

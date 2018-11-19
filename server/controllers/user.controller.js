@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 var express = require('express');
+const Conversation = require('../models/conversation.model')
 
 import {myPassport} from '../services/auth.services'
 
@@ -50,6 +51,15 @@ export function getFriends(req, res) {
 		res.send(users)
 	})
 }
+
+export function getConversations(req, res) {
+	let loggedInUserId = req.params.user_id
+	
+	Conversation.find({ user_ids : {$in: [loggedInUserId] } }, function(err, conversations) {
+		res.send(conversations)
+	})
+}
+
 /*
 
 

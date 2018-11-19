@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 let ConversationSchema = new mongoose.Schema({
-	user_emails: {
+	user_ids: {
 		type: [String],
 		unique: true,
 	},
@@ -15,6 +15,9 @@ let ConversationSchema = new mongoose.Schema({
 ConversationSchema.methods = {
   toJSON() {
   	return {
+      _id: this._id,
+      user_ids: this.user_ids,
+      message_log: this.message_log
   	}
   }
 };

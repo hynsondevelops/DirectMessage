@@ -15,4 +15,5 @@ router.post('/login', userController.loginUser);
 router.get('/show/:query', user_controller.showUser)
 router.post('/add_friend', userController.addFriend)
 router.get('/get_friends/:user_id', userController.getFriends)
+router.get('/get_conversations/:user_id', userController.getConversations)
 module.exports = router;
