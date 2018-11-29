@@ -3,11 +3,9 @@ import mongoose from 'mongoose';
 let ConversationSchema = new mongoose.Schema({
 	user_ids: {
 		type: [String],
-		unique: true,
 	},
   message_log: {
     type: [String],
-    unique: true,
   }
 });
 

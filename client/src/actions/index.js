@@ -52,4 +52,8 @@ export const getFriendsInfo = (friends) => ({
   friends
 })
 
+export const getConversationsInfo = (conversations) =>({
+  type: 'getConversationsInfo',
+  conversations
+})
 

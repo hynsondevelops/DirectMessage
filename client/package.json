@@ -43,7 +43,9 @@
       "<rootDir>/src",
       "<rootDir>/node_modules"
     ],
-    "testPathIgnorePatterns": ["<rootDir>/__tests__/setup/"],
+    "testPathIgnorePatterns": [
+      "<rootDir>/__tests__/setup/"
+    ],
     "setupTestFrameworkScriptFile": "<rootDir>src/setupTests.js"
   },
   "babel": {

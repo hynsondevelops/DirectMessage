@@ -1,4 +1,4 @@
-import {updateUserName, updatePasswordConfirmation, updateUserPassword, updateUserEmail, userLoginRequest, userLoginSuccess, userLoginFailure, userRegisterRequest, userRegisterSuccess, userRegisterFailure, getFriendsInfo } from '../actions/index';
+import {updateUserName, updatePasswordConfirmation, updateUserPassword, updateUserEmail, userLoginRequest, userLoginSuccess, userLoginFailure, userRegisterRequest, userRegisterSuccess, userRegisterFailure, getFriendsInfo, getConversationsInfo } from '../actions/index';
 import axiosClient from '../axiosClient'
 
 export function updateUsername(event) {
@@ -34,15 +34,26 @@ export function userLogin(user) {
 		.then(response => {
 			console.log(response.data)
 			dispatch(userLoginSuccess(response.data))
-			return axiosClient.get('/user/get_friends/' + "5bd761afac53c523a5b2a95c")
+			return axiosClient.get('/user/get_friends/' + response.data._id)
 		})
 		.then(response => {
+			console.log("**URL**")
+			let user_id = (response.request.responseURL.slice(39, 75))
 			console.log(response)
 			dispatch(getFriendsInfo(response.data))
+			return axiosClient.get('/user/get_conversations/' + user_id)
+		})	
+		.then(response => {
+			dispatch(getConversationsInfo(response.data))
 		})
 		.catch(error => {
-			console.log(error)
-		     dispatch(userLoginFailure(error))
+			if (!error) {
+				console.log("Error undefined")
+			}
+			else {
+				console.log(error)
+			}
+			dispatch(userLoginFailure(error))
 		}); 
 	}
 

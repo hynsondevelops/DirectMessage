@@ -33,6 +33,8 @@ const user = (state = [], action) => {
       return Object.assign({}, state, {errors: action.errors})
     case 'getFriendsInfo':
       return Object.assign({}, state, {friends: action.friends})
+    case 'getConversationsInfo':
+      return Object.assign({}, state, {conversations: action.conversations})
     default: 
       return INITIAL_USER_STATE
   }

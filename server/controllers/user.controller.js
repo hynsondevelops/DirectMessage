@@ -53,9 +53,13 @@ export function getFriends(req, res) {
 }
 
 export function getConversations(req, res) {
-	let loggedInUserId = req.params.user_id
-	
-	Conversation.find({ user_ids : {$in: [loggedInUserId] } }, function(err, conversations) {
+	console.log(req.params.user_id)
+	let loggedInUserId = (req.params.user_id)
+	console.log(loggedInUserId)
+	console.log("get convo")
+	Conversation.find({ user_ids : {$in: [loggedInUserId]} }, function(err, conversations) {
+		if (err) return handleError(err)
+		console.log(conversations)
 		res.send(conversations)
 	})
 }

@@ -18,7 +18,7 @@ const db = 'mongodb://localhost/ChatAppDB';
 const cors = require('cors')
 
 const user = require('./routes/user.route'); // Imports routes for the products
-//const message = require('./routes/message.route')
+const conversation = require('./routes/conversation.route')
 import { authJwt } from './services/auth.services'
 
 
@@ -43,7 +43,7 @@ app.set('view engine', 'ejs')
 //user
 app.use('/user', user)
 //app.use('/message', message)
-//app.use('/conversation', conversation)
+app.use('/conversation', conversation)
 
 // create the homepage route at '/'
 app.get('/', (req, res) => {

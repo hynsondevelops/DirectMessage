@@ -260,6 +260,31 @@ describe('Users', () => {
             })
         })
       });
+  })
+
+  describe('GET /get_conversations/:user_id', () => {
+    it('should return conversations a user is a member of', (done) => {
+      let loggedInUser = new User(loggedInUserInfo)
+      loggedInUser.save((err, loggedInUser) => {
+        let conversation = new Conversation({
+          user_ids: [loggedInUser._id],
+          message_log: ["message1", "message2"]
+        })
+        conversation.save((err, conversation) => {
+          chai.request(server)
+              .get('/user/get_conversations/' + loggedInUser._id)
+              .send() 
+              .end((err, res) => {
+                  res.should.have.status(200);
+                  res.body.should.be.a('array');
+                  res.body[0].user_ids[0].should.eql(loggedInUser._id.toString())
+                  res.body[0].message_log.should.have.eql(["message1", "message2"])
+                  done();
+              });
+          })
+      })
     })
+
+  })
 
 });

@@ -7,8 +7,7 @@ const conversation_controller = require('../controllers/conversation.controller'
 
 import * as conversationController from '../controllers/conversation.controller'
 
-router.get('/show', conversation_controller.getConversation);
-router.post('/new', conversation_controller.createConversation);
-router.get('/new', conversation_controller.newConversation);
+router.post('/create', conversation_controller.createConversation);
+router.post('/add_user/:user_id/:conversation_id', conversation_controller.addUserToConversation);
 
 module.exports = router;
